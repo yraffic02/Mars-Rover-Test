@@ -46,16 +46,17 @@ export function LogsTable() {
     const { result } = useSelector((state: RootState) => state.rover);
 
     const fetchLogs = useCallback(async () => {
-        const plateauSize = getLocalStorageItem('plateauSize')
+        try {
+            const plateauSize = getLocalStorageItem('plateauSize');
 
-        if (!plateauSize) {
-            return;
+            if (!plateauSize) {
+                return;
+            }
+
+            await dispatch(getLogs(plateauSize));
+        } catch (error) {
+            console.error('Error fetching logs:', error);
         }
-
-        await dispatch(
-            getLogs(plateauSize)
-        )
-
     }, [result, dispatch]);
 
     useEffect(() => {
