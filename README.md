@@ -14,6 +14,20 @@ pnpm dev
 bun dev
 ```
 
+## Attention
+
+if you choose to run the db in docker do the following:
+
+command to run docker compose: 
+
+```bash
+docker-compose up
+# then run this command to get the IP of the mysql container
+# you will replace the ip that is in .env
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.Gateway}}{{end}}' mysql
+
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
