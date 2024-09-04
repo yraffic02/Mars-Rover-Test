@@ -137,6 +137,8 @@ const CartesianPlane = () => {
 
     const getDirectionRover = useCallback(async (rover: number, plateauSize: string) => {
         try {
+            if (!rover || !plateauSize) return;
+
             await dispatch(
                 getDirectionByRove({ plateauSize, rover })
             )
