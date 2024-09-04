@@ -1,3 +1,4 @@
+'use client'
 import CartesianPlane from "@/components/CartesianPlane/CartesianPlane";
 import { FormRoverCommand } from "@/components/FormRoverCommand/FormRoverCommand";
 import { LogsTable } from "@/components/Tables/LogsTable/LogsTable";
