@@ -16,9 +16,11 @@ import { FormSchemaRover } from "@/utils/schemas/FormSchemaRover"
 import { Input } from "../ui/input"
 import { toast } from "../ui/use-toast"
 import { useDispatch } from 'react-redux'
-import { registerCommandRover } from "@/store/features/rover-slice"
 import { AppDispatch } from "@/store/store"
 import { clearAllLocalStorage, getLocalStorageItem } from "@/utils/localStorage"
+import { registerCommandRover } from "@/store/actions/roverActions"
+import { useEffect } from "react"
+import { createRoverPosition, setEixos } from "@/store/slices/cartesianSlice"
 
 export function FormRoverCommand() {
     const dispatch = useDispatch<AppDispatch>();
@@ -35,9 +37,9 @@ export function FormRoverCommand() {
             initialPosition1: rover2 ? rover2.position : ''
         },
     })
+    const plateauSize = form.watch("plateauSize")
 
     const onSubmit = async (data: z.infer<typeof FormSchemaRover>) => {
-
         try {
             const response1 = await dispatch(
                 registerCommandRover({
@@ -53,7 +55,10 @@ export function FormRoverCommand() {
                     title: `Rover 1 está na localização ${response1.route.coordinates}`,
                 });
 
-                await new Promise((resolve) => setTimeout(resolve, 1000));
+                dispatch(createRoverPosition({
+                    color: "rgb(255, 187, 0)",
+                    rover: { number: "1", position: data.initialPosition }
+                }))
 
                 const response2 = await dispatch(
                     registerCommandRover({
@@ -67,6 +72,12 @@ export function FormRoverCommand() {
                     toast({
                         title: `Rover 2 está na localização ${response2.route.coordinates}`,
                     });
+
+                    dispatch(createRoverPosition({
+                        color: "rgb(25, 255, 4)",
+                        rover: { number: "2", position: data.initialPosition1 }
+                    }))
+
                 } else {
                     toast({
                         title: "Erro ao calcular rota! Rover 2",
@@ -86,7 +97,16 @@ export function FormRoverCommand() {
         }
     };
 
+    useEffect(() => {
+        const [plateauX, plateauY] = plateauSize.split(" ").map(Number);
+        console.log('x', plateauX, 'y', plateauY);
 
+        if (plateauX || plateauY) {
+            dispatch(setEixos({ x: plateauX, y: plateauY }))
+        } else {
+            dispatch(setEixos({ x: 0, y: 0 }))
+        }
+    }, [plateauSize])
 
     return (
         <Form {...form}>
