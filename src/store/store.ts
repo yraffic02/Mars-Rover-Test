@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import roverRducer from './features/rover-slice'
-import logsReducer from './features/logs-slice'
+import roverRducer from './slices/roverSlice'
+import logsReducer from './slices/logsSlice'
+import cartesianReducer from './slices/cartesianSlice'
 
 export function makeStore(){
     return configureStore({
         reducer: {
             rover: roverRducer,
-            logs: logsReducer
+            logs: logsReducer,
+            cartesian: cartesianReducer
         }
     })
 }
