@@ -38,7 +38,7 @@ const CartesianPlane = () => {
         scales: {
             x: {
                 min: 0,
-                max: eixos.x,
+                max: eixos.x!,
                 ticks: {
                     stepSize: 1,
                 },
@@ -49,7 +49,7 @@ const CartesianPlane = () => {
             },
             y: {
                 min: 0,
-                max: eixos.y,
+                max: eixos.y!,
                 ticks: {
                     stepSize: 1,
                 },
