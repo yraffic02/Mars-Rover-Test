@@ -4,8 +4,8 @@ import { AppDispatch, RootState } from "@/store/store"
 import { StoreTable } from "../Table";
 import { ColumnDef } from "@tanstack/react-table";
 import { useCallback, useEffect } from "react"
-import { getLogs } from "@/store/features/logs-slice";
 import { getLocalStorageItem } from "@/utils/localStorage";
+import { getLogs } from "@/store/actions/logsActions";
 
 
 export type Logs = {
