@@ -5,7 +5,7 @@ import axios from "axios";
 export const registerCommandRover = createAsyncThunk(
     "rovers/registerCommand",
     async (
-        data: { rover: number, plateauSize: string; initialPosition: string; command: string },
+        data: { rover: number, plateauSize: string; initialPosition: string; command: string, userId: number },
         thunkApi
     ) => {
         try {
