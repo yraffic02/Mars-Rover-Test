@@ -1,4 +1,4 @@
-import { Logs } from "@prisma/client";
+import { Logs, User } from "@prisma/client";
 import { Coordinates, Dataset } from "./interfaces";
 
 export interface LogsStates {
@@ -32,4 +32,10 @@ export interface CartesianState {
   loading: boolean;
   error: string | null;
   eixos: Coordinates
+}
+
+export interface UserState {
+  user: User
+  loading: boolean
+  error: string
 }
