@@ -15,8 +15,8 @@ import { Button } from "../ui/button"
 import { FormSchemaRover } from "@/utils/schemas/FormSchemaRover"
 import { Input } from "../ui/input"
 import { toast } from "../ui/use-toast"
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from "@/store/store"
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from "@/store/store"
 import { clearAllLocalStorage, getLocalStorageItem } from "@/utils/localStorage"
 import { registerCommandRover } from "@/store/actions/roverActions"
 import { useEffect } from "react"
@@ -24,6 +24,7 @@ import { createRoverPosition, setEixos } from "@/store/slices/cartesianSlice"
 
 export function FormRoverCommand() {
     const dispatch = useDispatch<AppDispatch>();
+    const { user } = useSelector((state: RootState) => state.user)
     const existingPlateauSize = typeof window !== 'undefined' ? getLocalStorageItem('plateauSize') : null;
     const rover1 = typeof window !== 'undefined' ? getLocalStorageItem(`Rover-1`) : null;
     const rover2 = typeof window !== 'undefined' ? getLocalStorageItem(`Rover-2`) : null;
@@ -47,6 +48,7 @@ export function FormRoverCommand() {
                     plateauSize: data.plateauSize,
                     initialPosition: data.initialPosition,
                     command: data.command,
+                    userId: user.id
                 })
             ).unwrap();
 
@@ -66,6 +68,7 @@ export function FormRoverCommand() {
                         plateauSize: data.plateauSize,
                         initialPosition: data.initialPosition1,
                         command: data.command1,
+                        userId: user.id
                     })
                 ).unwrap();
                 if (response2.status === 200) {
@@ -99,7 +102,6 @@ export function FormRoverCommand() {
 
     useEffect(() => {
         const [plateauX, plateauY] = plateauSize.split(" ").map(Number);
-        console.log('x', plateauX, 'y', plateauY);
 
         if (plateauX || plateauY) {
             dispatch(setEixos({ x: plateauX, y: plateauY }))
