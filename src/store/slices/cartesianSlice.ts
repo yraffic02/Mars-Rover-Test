@@ -87,11 +87,13 @@ const roverSlice = createSlice({
             const { rover, x, y, direction } = action.payload;
         
             if(rover === 1){
+                state.datasets[1].data = [];
                 state.datasets[0].data.push({ x, y });
                 state.datasets[0].label = `Rover ${rover} - ${direction} ${x} ${y}`;
             }
 
             if(rover === 2){
+                state.datasets[1].data = [];
                 state.datasets[1].data.push({ x, y });
                 state.datasets[1].label = `Rover ${rover} - ${direction} ${x} ${y}`;
             }
@@ -117,6 +119,34 @@ const roverSlice = createSlice({
                     ...dataset.data,
                     ...positions
                 ]
+            }
+
+            const rover1Init = state.datasets.find(dataset => dataset.label.startsWith('Rover-1 init'));
+
+            if (rover1Init && rover === "Rover 1") {
+                const pastRover1 = state.datasets.find(dataset => dataset.label === "Past Rover 1");
+
+                if (pastRover1) {
+                    pastRover1.data = pastRover1.data.filter(
+                        pastPos => !rover1Init.data.some(
+                            initPos => initPos.x === pastPos.x && initPos.y === pastPos.y
+                        )
+                    );
+                }
+            }
+
+            const rover2Init = state.datasets.find(dataset => dataset.label.startsWith('Rover-2 init'));
+
+            if (rover2Init && rover === "Rover 2") {
+                const pastRover2 = state.datasets.find(dataset => dataset.label === "Past Rover 2");
+
+                if (pastRover2) {
+                    pastRover2.data = pastRover2.data.filter(
+                        pastPos => !rover2Init.data.some(
+                            initPos => initPos.x === pastPos.x && initPos.y === pastPos.y
+                        )
+                    );
+                }
             }
         },
         setLoading(state, action: PayloadAction<boolean>) {
