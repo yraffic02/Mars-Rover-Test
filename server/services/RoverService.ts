@@ -26,18 +26,38 @@ export const RoverService = {
 
         return currentPosition;
     },
+    createLogRover: async (
+        command: string,
+        plateauSize: string,
+        position: string,
+        name: string,
+        userId: number,
+    ) =>{
+        const log = await prisma.logs.create({
+            data: {
+                command,
+                plateauSize,
+                position,
+                name,
+                userId
+            }
+        });
+
+        return log
+    }, 
     calculateFinalPosition: async (
         rover: number,
         plateauSize: string,
         initialPosition: string,
-        commands: string
+        commands: string,
+        userId: number
     ): Promise<{ 
         rover: number,
         coordinates: {
             x: number,
             y: number
         },
-        direction: string
+        direction: string,
     } | undefined> => {
         try {
             const lastLog = await prisma.logs.findFirst({
@@ -54,37 +74,44 @@ export const RoverService = {
             const [plateauX, plateauY] = plateauSize.split(" ").map(Number);
 
             let currentPosition = RoverService.getCurrentPositin(initialPosition)
-
-            await prisma.logs.create({
+    
+            /* await prisma.logs.create({
                 data: {
                     command: '',
                     plateauSize,
                     position: `${currentPosition.x} ${currentPosition.y} ${currentPosition.direction}`,
                     name: `Rover ${rover}`,
+                    userId
                 }
-            });
+            }); */
+
+            await RoverService.createLogRover(
+                    '', 
+                    plateauSize, 
+                    `${currentPosition.x} ${currentPosition.y} ${currentPosition.direction}`,
+                    `Rover ${rover}`,
+                    userId,
+            )
 
             for (const command of commands) {
-            if (command === 'L') {
-                currentPosition.direction = RoverService.turnLeft(currentPosition.direction);
-            } else if (command === 'R') {
-                currentPosition.direction = RoverService.turnRight(currentPosition.direction);
-            } else if (command === 'M') {
-                const move = moves[currentPosition.direction];
-                currentPosition.x = Math.min(Math.max(currentPosition.x + move.x, 0), plateauX);
-                currentPosition.y = Math.min(Math.max(currentPosition.y + move.y, 0), plateauY);
-            }
+                if (command === 'L') {
+                    currentPosition.direction = RoverService.turnLeft(currentPosition.direction);
+                } else if (command === 'R') {
+                    currentPosition.direction = RoverService.turnRight(currentPosition.direction);
+                } else if (command === 'M') {
+                    const move = moves[currentPosition.direction];
+                    currentPosition.x = Math.min(Math.max(currentPosition.x + move.x, 0), plateauX);
+                    currentPosition.y = Math.min(Math.max(currentPosition.y + move.y, 0), plateauY);
+                }
+                await RoverService.createLogRover(
+                    commands, 
+                    plateauSize, 
+                    `${currentPosition.x} ${currentPosition.y} ${currentPosition.direction}`,
+                    `Rover ${rover}`,
+                    userId,
+                )
             }
 
-            await prisma.logs.create({
-                data: {
-                    command: commands,
-                    plateauSize,
-                    position: `${currentPosition.x} ${currentPosition.y} ${currentPosition.direction}`,
-                    name: `Rover ${rover}`,
-                }
-            })
-            
             return {
                 rover,
                 coordinates: {

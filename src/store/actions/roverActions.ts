@@ -25,6 +25,7 @@ export const registerCommandRover = createAsyncThunk(
             plateauSize: existingPlateauSize ? existingPlateauSize : data.plateauSize,
             initialPosition: data.initialPosition,
             command: data.command,
+            userId: data.userId
         });
         
         const { result }= response.data
