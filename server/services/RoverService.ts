@@ -74,16 +74,6 @@ export const RoverService = {
             const [plateauX, plateauY] = plateauSize.split(" ").map(Number);
 
             let currentPosition = RoverService.getCurrentPositin(initialPosition)
-    
-            /* await prisma.logs.create({
-                data: {
-                    command: '',
-                    plateauSize,
-                    position: `${currentPosition.x} ${currentPosition.y} ${currentPosition.direction}`,
-                    name: `Rover ${rover}`,
-                    userId
-                }
-            }); */
 
             await RoverService.createLogRover(
                     '', 
