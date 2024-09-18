@@ -6,13 +6,7 @@ export async function POST(
   ) {
   try {
     const { username } = await req.json()
-
-    const existingUser = await UserService.getUser(username)
-
-    if(existingUser){
-        return NextResponse.json({ user: existingUser }, { status: 200 })
-    }
-
+    
     const newUser = await UserService.create(username)
 
     return NextResponse.json({ user: newUser }, { status: 201 })
