@@ -11,13 +11,9 @@ export function ControllerUser({ children }: { children: ReactNode }) {
     const dispatch = useDispatch<AppDispatch>();
 
     const generateUsername = useCallback(() => {
-        const userAgent = navigator.userAgent;
-        const platform = navigator.platform;
-        const browser = userAgent.match(/(firefox|msie|chrome|safari|trident)/gi)?.[0] || 'unknown-browser';
         const uniqueId = uuid();
 
-
-        const generatedName = `${browser}-${platform}-${uniqueId}`;
+        const generatedName = uniqueId;
 
         return generatedName;
     }, [])
