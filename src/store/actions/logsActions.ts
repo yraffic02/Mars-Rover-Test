@@ -3,9 +3,9 @@ import axios from "axios";
 
 export const getLogs = createAsyncThunk(
     "logs/getLogs",
-    async (plateauSize: string, thunkApi) => {
+    async (data:{ plateauSize: string, userId: number}, thunkApi) => {
       try {
-          const response = await axios.post('/api/logs', {plateauSize});
+          const response = await axios.post('/api/logs', {plateauSize: data.plateauSize, userId: data.userId});
   
           return response.data.result   
       } catch (error: any) {

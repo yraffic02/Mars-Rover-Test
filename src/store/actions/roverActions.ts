@@ -45,7 +45,7 @@ export const registerCommandRover = createAsyncThunk(
 export const getDirectionByRove = createAsyncThunk(
     "rovers/getDirectionByRove",
     async (
-        data: { rover: number},
+        data: { rover: number, userId: number},
         thunkApi
     ) => {
         try {
@@ -53,7 +53,7 @@ export const getDirectionByRove = createAsyncThunk(
 
         if (!existingPlateauSize) return;
 
-        const response = await axios.get(`/api/direction/${data.rover}?plateauSize=${existingPlateauSize}`);
+        const response = await axios.get(`/api/direction/${data.rover}?plateauSize=${existingPlateauSize}&&userId=${data.userId}`);
         
         return response.data.result;
         } catch (error: any) {

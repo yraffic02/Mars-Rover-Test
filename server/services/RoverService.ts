@@ -114,20 +114,22 @@ export const RoverService = {
             console.log(error);
         }
     },
-    getAll:async (plateauSize: string) =>{
+    getAll:async (plateauSize: string, userId: number) =>{
         const logs = await prisma.logs.findMany({
             where: {
-                plateauSize
+                plateauSize,
+                userId
             }
         })
 
         return logs;
     },
-    getByRoverDirections: async (rover: string, plateauSize: string) => {
+    getByRoverDirections: async (rover: string, plateauSize: string, userId: number) => {
         const logs = await prisma.logs.findMany({
             where: {
                 name: rover,
-                plateauSize
+                plateauSize,
+                userId
             }
         })
         

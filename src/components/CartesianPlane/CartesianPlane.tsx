@@ -24,6 +24,7 @@ const CartesianPlane = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { result, direction } = useSelector((state: RootState) => state.rover);
     const { datasets, eixos } = useSelector((state: RootState) => state.cartesian);
+    const { user } = useSelector((state: RootState) => state.user);
     let options = {
         responsive: true,
         plugins: {
@@ -63,7 +64,7 @@ const CartesianPlane = () => {
 
     const getDirectionRover = useCallback(async (rover: number) => {
         await dispatch(
-            getDirectionByRove({ rover })
+            getDirectionByRove({ rover, userId: user.id })
         )
     }, [result])
 

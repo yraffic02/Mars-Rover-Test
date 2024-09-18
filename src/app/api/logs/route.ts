@@ -5,9 +5,9 @@ export async function POST(
     req: Request,
   ) {
   try {
-    const { plateauSize } = await req.json()
+    const { plateauSize, userId } = await req.json()
 
-    const result = await RoverService.getAll(plateauSize)
+    const result = await RoverService.getAll(plateauSize, userId)
 
     return NextResponse.json({result}, { status: 200 })
   } catch (error) {

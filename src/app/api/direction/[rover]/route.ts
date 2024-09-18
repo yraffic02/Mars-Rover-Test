@@ -9,9 +9,10 @@ export async function GET(
   try {
     const searchParams = req.nextUrl.searchParams
     const plateauSize = searchParams.get('plateauSize') ?? ''
+    const userId = searchParams.get('userId') ?? ''
     const rover = params.rover;
 
-    const result = await RoverService.getByRoverDirections(`Rover ${rover}`, plateauSize)
+    const result = await RoverService.getByRoverDirections(`Rover ${rover}`, plateauSize, +userId)
 
     return NextResponse.json({result}, { status: 200 })
   } catch (error) {
